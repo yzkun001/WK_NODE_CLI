@@ -1,0 +1,21 @@
+{
+  "name": "wk-node",
+  "version": "1.0.0",
+  "license": "MIT",
+  "keywords": [
+    "cli",
+    "wk-node"
+  ],
+  "bin": {
+    "wk-node": "./index"
+  },
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "commander": "^7.2.0",
+    "download-git-repo": "^3.0.2",
+    "inquirer": "^8.1.1",
+    "log-symbols": "^5.0.0",
+    "log-utils": "^1.0.0",
+    "ora": "^5.4.1"
+  }
+}

@@ -1,0 +1,46 @@
+#!/usr/bin/env node
+const program = require('commander');
+const fs = require('fs')
+const path = require('path')
+const chalk = require('chalk')
+const logUtil = require('log-utils')
+const inquirer = require('inquirer')
+const ora = require('ora')
+const download = require('download-git-repo')
+const { execSync } = require('child_process')
+
+const resolve = p => path.resolve(__dirname, p)
+
+program.version('1.0.0', '-v, --version')
+.command('init <name>')
+.action(name => {
+  const _dir = resolve(`./${name}`)
+  const isExists = fs.existsSync(_dir)
+  if(isExists) {
+    return console.log(logUtil.error, chalk.red(`${_dir}已存在`))
+  }
+  inquirer.prompt([{
+    type: "confirm",
+    message: "use typescript?",
+    name: "useTs"
+  }])
+  .then(() => {
+    const spinner = ora('正在下载模板...')
+    spinner.start()
+    download('1044740162/NODE_TEMPLATE', name, {clone: true}, err => {
+      if (err) {
+        spinner.fail()
+        return console.log(chalk.red(err))
+      }
+      spinner.succeed()
+      const installSpinner = ora('安装依赖项...')
+      installSpinner.start()
+      execSync(`cd ${name} && npm install`)
+      installSpinner.succeed()
+    })
+  })
+})
+
+
+program.parse(process.argv)
+
